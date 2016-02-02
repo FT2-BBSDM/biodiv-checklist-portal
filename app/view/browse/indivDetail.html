@@ -27,6 +27,10 @@
                     
                     <p class="label_detail" style="margin: 0 0 0;">Tag</p>
                     <p>{$getIndiv->tag}</p>
+
+                    <div class="row">
+                        <a type="button" class="btn" href="{$basedomain}browse/qrcode/?id={$indivID}"><button>Generate QR Code</button></a>
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <h3>Location</h3>
@@ -40,7 +44,7 @@
                     </div>-->
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Elevation</p></div>
-                        <div class="col-md-10"><p>{$getIndiv->elev}</p></div>
+                        <div class="col-md-10"><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/verbatimElevation"><p itemprop="verbatimElevation">{$getIndiv->elev}</p></div></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Geomorph</p></div>
@@ -48,23 +52,23 @@
                     </div>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Locality</p></div>
-                        <div class="col-md-10"><p>{$getIndiv->locality}</p></div>
+                        <div class="col-md-10"><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/locality"><p itemprop="locality">{$getIndiv->locality}</p></div></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">County</p></div>
-                        <div class="col-md-10"><p>{$getIndiv->county}</p></div>
+                        <div class="col-md-10"><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/county"><p itemprop="county">{$getIndiv->county}</p></div></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Province</p></div>
-                        <div class="col-md-10"><p>{$getIndiv->province}</p></div>
+                        <div class="col-md-10"><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/stateProvince"><p itemprop="stateProvince">{$getIndiv->province}</p></div></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Island</p></div>
-                        <div class="col-md-10"><p>{$getIndiv->island}</p></div>
+                        <div class="col-md-10"><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/island"><p itemprop="island">{$getIndiv->island}</p></div></div>
                     </div>
                     <div class="row">
                         <div class="col-md-2"><p class="label_detail">Country</p></div>
-                        <div class="col-md-10"><p>{$getIndiv->country}</p></div>
+                        <div class="col-md-10"><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/country"><p itemprop="country">{$getIndiv->country}</p></div></div>
                     </div>
                 </div>
                 {/foreach}
@@ -104,7 +108,7 @@
                         <td class="text-center"><span class="glyphicon glyphicon-{if $getObs->flower=='yes'}ok{else}remove{/if}"></span></td>
                         <td class="text-center"><span class="glyphicon glyphicon-{if $getObs->fruit=='yes'}ok{else}remove{/if}"></span></td>
                         <td>{$getObs->localname}</td>
-                        <td>{$getObs->notes}</td>
+                        <td><div itemscope itemtype ="http://rs.tdwg.org/dwc/terms/fieldNotes"><p itemprop="fieldNotes">{$getObs->notes}</p></div></td>
 
                     </tr>
                     {/foreach}

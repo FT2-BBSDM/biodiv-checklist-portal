@@ -646,4 +646,9 @@ function mpdf($html)
 	exit;
 }
 
+function parseURI($data)
+{
+	if (!is_array($data)) return false;
+	return explode('/', key($data));
+}
 ?>

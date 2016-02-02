@@ -10,6 +10,8 @@ class browseHelper extends Database {
      * @param $value = value
      * @return id, rank, morphotype, fam, gen, sp, subtype, ssp, auth, notes
      */
+
+    var $prefix = "floraina"; 
     function dataTaxon($condition,$field,$value){
         if($condition==true){
             $sql = "SELECT * FROM `taxon` WHERE $field='$value'";
@@ -388,5 +390,182 @@ class browseHelper extends Database {
             else{return false;}                
     }
 	
+
+    function tbhPoster($data){
+        $arrImg = null;
+        $IdIndiv = null;
+        $IdPerson = null;
+        $IdPerson = null;
+        $gen = null;
+        $lokasi = null;
+        $nama = null;
+        foreach ($data as $value) {
+            $dataImg= explode('-', $value);
+            $IdIndiv = $dataImg[1];
+            $IdPerson = $dataImg[2];
+            $arrImg .= $dataImg[3]."-";
+            $gen = $dataImg[4];
+            $lokasi = $dataImg[5];
+            $nama = $dataImg[6];
+        }
+
+        $res = $this->fetch("SELECT indiv_id from {$this->prefix}_poster where indiv_id='$IdIndiv' ",1);
+        if(!$res)
+        {
+            $sql = "INSERT into {$this->prefix}_poster set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', img_rand='$arrImg', gen='$gen', locn='$lokasi', name='$nama' ";
+            $this->query($sql,0);
+        }
+        else
+        {
+            $sql = "UPDATE {$this->prefix}_poster set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', img_rand='$arrImg', gen='$gen', locn='$lokasi', name='$nama' where indiv_id='$IdIndiv' ";
+            $this->query($sql,0);
+        }
+         $no = 0;
+        $sql2 = "SELECT * from `{$this->prefix}_poster` ";
+        $res2 = $this->fetch($sql2,1); 
+        foreach ($res2 as $value) {
+            $arr_hsl[$no]['indiv_id'] = $value[indiv_id];
+            $arr_hsl[$no]['person_id'] = $value[person_id];
+            $arr_hsl[$no]['caption'] = explode("-",$value[caption]);
+            $arr_hsl[$no]['gen'] = $value[gen];
+            $arr_hsl[$no]['locn'] = $value[locn];
+            $arr_hsl[$no]['name'] = $value[name];
+            $arr_hsl[$no]['md5sum'] = explode("-",$value[img_rand]);
+            $no++;
+        }
+        return $arr_hsl;
+    }
+
+  function tbhDataPic($data){
+        $arrImg = null;
+        $IdIndiv = null;
+        $IdPerson = null;
+        $IdPerson = null;
+        $gen = null;
+        $lokasi = null;
+        $nama = null;
+        foreach ($data as $value) {
+            $dataImg= explode('-', $value);
+            $IdIndiv = $dataImg[1];
+            $IdPerson = $dataImg[2];
+            $arrImg .= $dataImg[3]."-";
+            $gen = $dataImg[4];
+            $lokasi = $dataImg[5];
+            $nama = $dataImg[6];
+        }
+
+        $res = $this->fetch("SELECT indiv_id from {$this->prefix}_picture where indiv_id='$IdIndiv' ",1);
+        if(!$res)
+        {
+            $sql = "INSERT into {$this->prefix}_picture set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', img_rand='$arrImg', gen='$gen', locn='$lokasi', name='$nama' ";
+            $this->query($sql,0);
+        }
+        else
+        {
+            $sql = "UPDATE {$this->prefix}_picture set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', img_rand='$arrImg', gen='$gen', locn='$lokasi', name='$nama' where indiv_id='$IdIndiv' ";
+            $this->query($sql,0);
+        }
+
+    }
+    function tbhPicture($data){
+        $arr_hsl = array();
+        // foreach ($data as $value) {
+        //     $dataImg= explode('-', $value);
+        //     $IdIndiv = $dataImg[1];
+        //     $IdPerson = $dataImg[2];
+        //     $md5sum = $dataImg[3];
+        //     $gen = $dataImg[4];
+        //     $lokasi = $dataImg[5];
+        //     $nama = $dataImg[6];
+        //     $sql = "INSERT into picture set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', caption=0, gen='$gen', locn='$lokasi', name='$nama' ";
+        //     $this->query($sql,0);
+        // }
+        $no = 0;
+        $sql2 = "SELECT * from `{$this->prefix}_picture` ";
+        $res2 = $this->fetch($sql2,1); 
+        foreach ($res2 as $value) {
+            $arr_hsl[$no]['indiv_id'] = $value[indiv_id];
+            $arr_hsl[$no]['person_id'] = $value[person_id];
+            $arr_hsl[$no]['caption'] = explode("-",$value[caption]);
+            $arr_hsl[$no]['gen'] = $value[gen];
+            $arr_hsl[$no]['locn'] = $value[locn];
+            $arr_hsl[$no]['name'] = $value[name];
+            $arr_hsl[$no]['md5sum'] = explode("-",$value[img_rand]);
+            $no++;
+        }
+        // $img_rnd = explode("-",$res2[img_rand]);
+        // $arr_hsl = $res2;
+        // $this->query("DELETE from `picture` ",0);      
+        return $arr_hsl;
+        // foreach ($data as $value) {
+        //     $dataImg= explode('-', $value);
+        //     $IdIndiv = $dataImg[1];
+        //     $IdPerson = $dataImg[2];
+        //     $md5sum = $dataImg[3];
+        //     // $res_c = $this->query("SELECT indiv_id from picture where indiv_id='$IdIndiv' ",0);
+        //     // if (mysqli_num_rows($res_c)!==0) continue;
+        //     $sql = "INSERT into picture set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', caption=0";
+        //     $res = $this->query($sql,0);
+        // }
+    }
+    function tbhCaptionPB($data){
+        $arrImg = null;
+        $IdIndiv = null;
+        $IdPerson = null;
+        $IdPerson = null;
+        $gen = null;
+        $lokasi = null;
+        $nama = null;
+        foreach ($data as $value) {
+            $dataImg= explode('-', $value);
+            $IdIndiv = $dataImg[1];
+            $IdPerson = $dataImg[2];
+            $arrImg .= $dataImg[3]."-";
+            $gen = $dataImg[4];
+            $lokasi = $dataImg[5];
+            $nama = $dataImg[6];
+        }
+        $res = $this->fetch("SELECT indiv_id from {$this->prefix}_picture where indiv_id='$IdIndiv' ",1);
+        if(!$res)
+        {
+            $sql = "INSERT into {$this->prefix}_picture set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', caption='$arrImg', gen='$gen', locn='$lokasi', name='$nama' ";
+            $this->query($sql,0);
+        }
+        else
+        {
+            $sql = "UPDATE {$this->prefix}_picture set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', caption='$arrImg', gen='$gen', locn='$lokasi', name='$nama' where indiv_id='$IdIndiv' ";
+            $this->query($sql,0);
+        }
+    }
+
+    function tbhCaptionPoster($data){
+        $arrImg = null;
+        $IdIndiv = null;
+        $IdPerson = null;
+        $IdPerson = null;
+        $gen = null;
+        $lokasi = null;
+        $nama = null;
+        foreach ($data as $value) {
+            $dataImg= explode('-', $value);
+            $IdIndiv = $dataImg[1];
+            $IdPerson = $dataImg[2];
+            $arrImg .= $dataImg[3]."-";
+            $gen = $dataImg[4];
+            $lokasi = $dataImg[5];
+            $nama = $dataImg[6];
+        }
+        $res = $this->fetch("SELECT indiv_id from {$this->prefix}_poster where indiv_id='$IdIndiv' ",1);
+        if(!$res)
+        {
+            $sql = "INSERT into {$this->prefix}_poster set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', caption='$arrImg', gen='$gen', locn='$lokasi', name='$nama' ";
+            $this->query($sql,0);
+        }
+        else
+        {
+            $sql = "UPDATE {$this->prefix}_poster set indiv_id='$IdIndiv', md5sum='$md5sum', person_id = '$IdPerson', caption='$arrImg', gen='$gen', locn='$lokasi', name='$nama' where indiv_id='$IdIndiv' ";
+            $this->query($sql,0);
+        }
+    }
 }
 ?>
