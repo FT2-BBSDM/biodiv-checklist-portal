@@ -49,6 +49,8 @@
     function AreAnyCheckboxesChecked(data)
     {
 
+        var taxon = $('.taxonid_'+data).is(":checked");
+
         setTimeout(function() {
             if ($("#dataTaxon input:checkbox:checked").length > 10){
 
@@ -57,11 +59,12 @@
             
             } else {
                 
-                $.post(basedomain+"browse/ajax", { taxonid: data}, function(data){
-                    
-                    
+                
+                $.post(basedomain+"browse/ajax", { taxonid: data, check:taxon}, function(data){
+                
                 }, "JSON");
-
+                   
+                
                 $("#generate").removeAttr("disabled");
                
             }

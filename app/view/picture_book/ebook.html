@@ -1,7 +1,7 @@
 <html>
 <body>
 	<h4 style="padding: 15px 15px 15px 40px; background-color: #00ADBB; color: #FFF;"> <p align="center">Biodiversity Informatics in Indonesia</p></h4>
-	<h3 style="margin:30px 20px; font-size: 30px; color: #5A5A5A;"><p align="center">Nama Genus</span></p></h3>
+	<!--<h3 style="margin:30px 20px; font-size: 30px; color: #5A5A5A;"><p align="center">Nama Genus</span></p></h3>-->
 	<img src="{$basedomain}assets/img/cover_booklet_front.jpg" style="max-width: 100%;">
 	<h1 style="font-size: 30px; color: #5A5A5A;"><p align="center">FLORA <span style="color: #00ADBB;">INDONESIA</span></p></h1>
 		<h4 style="color: #00ADBB;"> <p align="center">Citizen Science Solution for National Biodiversity Data Needs</p></h4>
@@ -17,16 +17,16 @@
 		</tr>
 	</table>
 	<div style="page-break-before:always;"></div>
-{foreach $img as $value}
+{foreach $img as $k => $value}
 	<div style="vertical-align:middle; horizontal-align:middle; width: 900px; height: 595px; padding: 0 10px 10px; font-family: 'Trebuchet MS', Helvetica, sans-serif; border: 1px solid #111;">
 
 	<div style="width: 100%; float:left;">
-		<h4 style="padding: 5px 10px; margin:0; background-color: #00ADBB; color: #FFF; float: right;">1</h4>
+		<h4 style="padding: 5px 10px; margin:0; background-color: #00ADBB; color: #FFF; float: right;">{$k+1}</h4>
 		<div style="clear: both;"></div>
 
-		<i><p style="margin: 3px;">genus</p></i>
-		<p style="margin: 3px;">Lokasi</p>
-		<p style="margin: 3px;">Nama</p>
+		<i><p style="margin: 3px;">{$value[0]->genus[0]->gen}</p></i>
+		<!--<p style="margin: 3px;">Lokasi</p>-->
+		<p style="margin: 3px;">{$value[0]->genus[0]->name}</p>
 		{if (isset($value[0]->md5sum))}
 		<div style="float: left; width: 70%; background-color: #00ADBB; color: #FFF;">
 			<img src="{$peerkalbar_domain}public_assets/img/500px/{$value[0]->md5sum}.500px.jpg" style="max-width: 100%;">

@@ -198,9 +198,9 @@ class browse extends Controller {
     {
 
         $data['data'] = _p('taxonid');
+        $data['check'] = _p('check');
         $data['user'] = session_id();
         
-
         $getCurrentData = $this->models->getIdTaxon($data);
         
         if ($getCurrentData) {
@@ -209,7 +209,17 @@ class browse extends Controller {
 
             if (count($listData) > 10) return print json_encode(array('status'=>false));
 
-            $pushData = implode(',', $listData);
+            if ($data['check'] == 'true') {
+                $pushData = implode(',', $listData);
+            } else {
+                
+                $pop = array_search($data['data'], $listData);
+                unset($listData[$pop]);
+                $pushData = implode(',', $listData);
+            }
+            // pr($data['check']);
+            // pr($pushData);
+            // exit;
             $data['data'] = $pushData;
             $save = $this->models->updateIdTaxon($data);
             
@@ -243,11 +253,14 @@ class browse extends Controller {
             if ($indivImages) {
                 foreach ($indivImages as $k => $value) {
                     
-                    foreach ($value as $index => $val) {
-                        
-                        // pr($index);
-                        $indivImages[$k][$index]->genus = jsDecode($CONFIG['default']['peerkalbar_url'].'services/taxon/dataDetIndiv/?id='.$val->indivID);
+                    if ($value) {
+                        foreach ($value as $index => $val) {
+                            
+                            // pr($index);
+                            $indivImages[$k][$index]->genus = jsDecode($CONFIG['default']['peerkalbar_url'].'services/taxon/dataDetIndiv/?id='.$val->indivID);
+                        }
                     }
+                    
                 }
             }
             $this->view->assign('img',$indivImages);
@@ -255,7 +268,7 @@ class browse extends Controller {
             $html = $this->loadView('picture_book/ebook');
             // echo $CONFIG['default']['peerkalbar_url'].'services/taxon/dataDetIndiv/?id='.$val->indivID;
             mpdf($html,'A5');
-
+            // echo $html;
             // pr($indivImages);
         }
     }
