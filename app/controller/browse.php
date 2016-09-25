@@ -176,7 +176,8 @@ class browse extends Controller {
 
     function qrCode()
     {
-        generateQRCode('PHP QR Code');
+        $id = _g('id');
+        generateQRCode($id);
     }
 
     function dataStat(){
