@@ -16,7 +16,7 @@ class browse extends Controller {
 	
 	function loadmodule()
 	{
-        //$this->models = $this->loadModel('frontend');
+        $this->models = $this->loadModel('frontend');
 	}
 	
 	function dataTaxon(){
@@ -192,6 +192,72 @@ class browse extends Controller {
         // pr($taxon->result[0]);die;
 
         return $this->loadView('browse/dataStat');
+    }
+
+    function ajax()
+    {
+
+        $data['data'] = _p('taxonid');
+        $data['user'] = session_id();
+        
+
+        $getCurrentData = $this->models->getIdTaxon($data);
+        
+        if ($getCurrentData) {
+            $listData = explode(',',$getCurrentData['data']);
+            $listData[] = $data['data'];
+
+            if (count($listData) > 10) return print json_encode(array('status'=>false));
+
+            $pushData = implode(',', $listData);
+            $data['data'] = $pushData;
+            $save = $this->models->updateIdTaxon($data);
+            
+        } else {
+            $save = $this->models->storeIdTaxon($data);
+        }
+        
+        return print json_encode(array('status'=>true));
+        exit;
+    }
+
+    function generatePdf()
+    {
+        global $CONFIG;
+        $indivID = $_GET['id'];
+
+        $data['user'] = session_id();
+        
+
+        $getCurrentData = $this->models->getIdTaxon($data);
+        if ($getCurrentData) {
+            $listData = explode(',',$getCurrentData['data']);
+            $result = array_unique($listData);
+
+            if ($result) {
+                foreach ($result as $key => $value) {
+                    $indivImages[] = jsDecode($CONFIG['default']['peerkalbar_url'].'services/taxon/getAllImgIndiv/?id='.$value);
+                }
+            }
+            
+            if ($indivImages) {
+                foreach ($indivImages as $k => $value) {
+                    
+                    foreach ($value as $index => $val) {
+                        
+                        // pr($index);
+                        $indivImages[$k][$index]->genus = jsDecode($CONFIG['default']['peerkalbar_url'].'services/taxon/dataDetIndiv/?id='.$val->indivID);
+                    }
+                }
+            }
+            $this->view->assign('img',$indivImages);
+
+            $html = $this->loadView('picture_book/ebook');
+            // echo $CONFIG['default']['peerkalbar_url'].'services/taxon/dataDetIndiv/?id='.$val->indivID;
+            mpdf($html,'A5');
+
+            // pr($indivImages);
+        }
     }
 }
 

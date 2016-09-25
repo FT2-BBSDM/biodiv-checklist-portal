@@ -30,5 +30,24 @@ class frontend extends Database {
 		
 		// return $result;
 	}
+
+	public function storeIdTaxon($data)
+	{
+		$sql = "INSERT into tmp_generate (data, user_id) VALUES ('{$data['data']}', '{$data['user']}')";
+        $this->query($sql,0);
+	}
+
+	public function getIdTaxon($data)
+	{
+		$sql = "SELECT * FROM tmp_generate WHERE user_id = '{$data['user']}' LIMIT 1";
+        
+        return $this->fetch($sql);
+	}
+
+	public function updateIdTaxon($data)
+	{
+		$sql = "UPDATE tmp_generate SET data = '{$data['data']}' WHERE user_id = '{$data['user']}'";
+        $this->query($sql,0);
+	}
 }
 ?>

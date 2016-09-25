@@ -46,3 +46,25 @@
 	    dTableParam(idTable, param, limitData);
     }
 	
+    function AreAnyCheckboxesChecked(data)
+    {
+
+        setTimeout(function() {
+            if ($("#dataTaxon input:checkbox:checked").length > 10){
+
+                
+                $('#generate').attr("disabled","disabled");
+            
+            } else {
+                
+                $.post(basedomain+"browse/ajax", { taxonid: data}, function(data){
+                    
+                    
+                }, "JSON");
+
+                $("#generate").removeAttr("disabled");
+               
+            }
+        }, 100);
+    }
+    
